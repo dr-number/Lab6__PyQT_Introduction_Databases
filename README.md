@@ -56,6 +56,16 @@
    </p>
 </figure>
 
+<figure>
+   <p align="center">
+      <img src="https://github.com/dr-number/Lab6__PyQT_Introduction_Databases/blob/main/for_read_me/7_add-5.jpg">
+   </p>
+   <p align="center">
+      <img src="https://github.com/dr-number/Lab6__PyQT_Introduction_Databases/blob/main/for_read_me/7_add-6.jpg">
+      <p align="center">Студетнт успешно сдал экзамен</p>
+   </p>
+</figure>
+
 # Редактирование данных
 <figure>
    <p align="center">
