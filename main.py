@@ -323,32 +323,31 @@ class StudentManager(QWidget):
         """)
     
     def createTriggers(self):
-        """Создание триггеров"""
+        """Создание триггеров с использованием универсальной функции"""
+    
+        def create_trigger_if_not_exists(trigger_name, trigger_sql):
+            """Универсальная функция для создания триггера с проверкой существования"""
+            query = QSqlQuery()
+            
+            # Проверяем существование триггера
+            check_query = QSqlQuery()
+            check_query.prepare("SELECT name FROM sqlite_master WHERE type='trigger' AND name = ?")
+            check_query.addBindValue(trigger_name)
+            
+            if check_query.exec() and check_query.next():
+                print(f"Триггер '{trigger_name}' уже существует")
+                return True
+            
+            # Создаем триггер
+            if query.exec(trigger_sql):
+                print(f"Триггер '{trigger_name}' успешно создан")
+                return True
+            else:
+                print(f"Ошибка создания триггера '{trigger_name}': {query.lastError().text()}")
+                return False
+    
+        # Создаем таблицу для логов (если не существует)
         query = QSqlQuery()
-        
-        # Триггер 1: Автоматическое обновление updated_at при изменении студента
-        query.exec("""
-            CREATE TRIGGER IF NOT EXISTS update_student_timestamp 
-            AFTER UPDATE ON students
-            FOR EACH ROW
-            BEGIN
-                UPDATE students SET updated_at = CURRENT_TIMESTAMP 
-                WHERE id = OLD.id;
-            END
-        """)
-        
-        # Триггер 2: Проверка оценки перед вставкой/обновлением
-        query.exec("""
-            CREATE TRIGGER IF NOT EXISTS validate_exam_grade
-            BEFORE INSERT ON exams
-            FOR EACH ROW
-            WHEN NEW.grade < 2 OR NEW.grade > 5
-            BEGIN
-                SELECT RAISE(ABORT, 'Оценка должна быть от 2 до 5');
-            END
-        """)
-        
-        # Триггер 3: Логирование удаления студентов
         query.exec("""
             CREATE TABLE IF NOT EXISTS deleted_students_log (
                 id INTEGER,
@@ -358,9 +357,32 @@ class StudentManager(QWidget):
                 deleted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         """)
-        
-        query.exec("""
-            CREATE TRIGGER IF NOT EXISTS log_student_deletion
+    
+        # Триггер 1: Автоматическое обновление updated_at при изменении студента
+        create_trigger_if_not_exists("update_student_timestamp", """
+            CREATE TRIGGER update_student_timestamp 
+            AFTER UPDATE ON students
+            FOR EACH ROW
+            BEGIN
+                UPDATE students SET updated_at = CURRENT_TIMESTAMP 
+                WHERE id = OLD.id;
+            END
+        """)
+    
+        # Триггер 2: Проверка оценки перед вставкой
+        create_trigger_if_not_exists("validate_exam_grade", """
+            CREATE TRIGGER validate_exam_grade
+            BEFORE INSERT ON exams
+            FOR EACH ROW
+            WHEN NEW.grade < 2 OR NEW.grade > 5
+            BEGIN
+                SELECT RAISE(ABORT, 'Оценка должна быть от 2 до 5');
+            END
+        """)
+    
+        # Триггер 3: Логирование удаления студентов
+        create_trigger_if_not_exists("log_student_deletion", """
+            CREATE TRIGGER log_student_deletion
             AFTER DELETE ON students
             FOR EACH ROW
             BEGIN
@@ -368,12 +390,10 @@ class StudentManager(QWidget):
                 VALUES (OLD.id, OLD.first_name, OLD.last_name, OLD.course);
             END
         """)
-        
-        print("Триггеры успешно созданы")
     
     def fillSampleData(self):
         """Заполнение базы данных случайными значениями"""
-        # Проверяем, есть ли данные в ЛЮБОЙ из таблиц
+
         tables_to_check = ["students", "courses", "exams", "student_courses"]
         has_data = False
         
@@ -385,9 +405,8 @@ class StudentManager(QWidget):
         
         if has_data:
             print("База данных уже содержит данные. Заполнение пропущено.")
-            return  # Если хотя бы одна таблица не пуста - пропускаем заполнение
+            return 
         
-        # Добавляем курсы
         courses = [
             ("Математика", "Иванов И.И."),
             ("Физика", "Петров П.П."),
@@ -403,7 +422,6 @@ class StudentManager(QWidget):
             query.addBindValue(teacher)
             query.exec()
         
-        # Добавляем студентов
         students = [
             ("Иван", "Иванов", 1, ["Математика", "Физика"]),
             ("Петр", "Петров", 2, ["Программирование", "Базы данных"]),
