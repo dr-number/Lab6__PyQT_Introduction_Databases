@@ -253,6 +253,9 @@ class StudentManager(QWidget):
         "exams": ["по ID", "по оценке", "по дате"]
     }
 
+    SORT_DIRECTION_ASC = "По возрастанию"
+    SORT_DIRECTION_DESC = "По убыванию"
+
     def get_sort_tables(self) -> dict:
         return self.__SORT_TABLES
     
@@ -558,6 +561,13 @@ class StudentManager(QWidget):
         
         self.sort_combo = QComboBox()
         self.sort_combo.currentTextChanged.connect(self.setSortingOrder)
+
+        self.sort_direction = QComboBox()
+        self.sort_direction.currentTextChanged.connect(self.setDirectionSortingOrder)
+        self.sort_direction.addItems([
+            self.SORT_DIRECTION_ASC,
+            self.SORT_DIRECTION_DESC
+        ])
         
         tables_h_box = QHBoxLayout()
         tables_h_box.addWidget(students_btn)
@@ -573,6 +583,8 @@ class StudentManager(QWidget):
         operations_h_box.addWidget(export_btn)
         operations_h_box.addWidget(import_btn)
         operations_h_box.addStretch()
+        operations_h_box.addWidget(QLabel("Направление сортировки:"))
+        operations_h_box.addWidget(self.sort_direction)
         operations_h_box.addWidget(QLabel("Сортировка:"))
         operations_h_box.addWidget(self.sort_combo)
         
@@ -777,6 +789,9 @@ class StudentManager(QWidget):
                 QMessageBox.information(self, "Успех", "Запись успешно удалена!")
             else:
                 QMessageBox.warning(self, "Ошибка", "Не удалось удалить запись!")
+
+    def setDirectionSortingOrder(self, text):
+        self.setSortingOrder(self.sort_combo.currentText())
     
     def setSortingOrder(self, text):
         """Сортировка строк в таблице"""
@@ -784,7 +799,11 @@ class StudentManager(QWidget):
             self.get_sort_tables()[self.current_table].index(text) if text else 
             0
         )
-        self.proxy_model.sort(sort_column, Qt.SortOrder.AscendingOrder)
+        self.proxy_model.sort(sort_column, (
+                Qt.SortOrder.AscendingOrder if self.sort_direction.currentText() == self.SORT_DIRECTION_ASC else
+                Qt.SortOrder.DescendingOrder
+            )
+        )
     
     def exportToCSV(self):
         """Экспорт главной таблицы в CSV файл"""
