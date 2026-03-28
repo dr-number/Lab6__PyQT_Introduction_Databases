@@ -166,3 +166,13 @@
    </p>
 </figure>
 
+# триггеры
+<figure>
+   <p align="center">
+      <img src="https://github.com/dr-number/Lab6__PyQT_Introduction_Databases/blob/main/for_read_me/10_trigger_dateupdate.jpg">
+   </p>
+   <p align="center">
+      <img src="https://github.com/dr-number/Lab6__PyQT_Introduction_Databases/blob/main/for_read_me/10_trigger_dateupdate-1.jpg">
+      <p align="center">Автоматическое обновление updated_at при изменении студента</p>
+   </p>
+</figure>

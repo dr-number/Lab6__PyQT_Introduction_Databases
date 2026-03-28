@@ -1,4 +1,3 @@
-# student_manager.py
 import sys
 import os
 import csv
@@ -19,8 +18,6 @@ from PyQt6.QtSql import (
 
 
 class AddEditStudentDialog(QDialog):
-    """Диалог для добавления/редактирования студента"""
-    
     def __init__(self, parent=None, student_id=None):
         super().__init__(parent)
         self.student_id = student_id
@@ -41,7 +38,6 @@ class AddEditStudentDialog(QDialog):
         self.course_spin.setRange(1, 6)
         self.course_spin.setSuffix(" курс")
         
-        # Выбор курсов (множественный выбор через чекбоксы)
         self.courses_group = QGroupBox("Выбранные курсы")
         courses_layout = QVBoxLayout()
         self.course_checkboxes = {}
@@ -58,7 +54,6 @@ class AddEditStudentDialog(QDialog):
         layout.addRow("Курс:", self.course_spin)
         layout.addRow(self.courses_group)
         
-        # Кнопки
         buttons = QDialogButtonBox(
             QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel
         )
