@@ -1,5 +1,5 @@
 /venv
 /doc_word
 /__pycache__
-/students.db
+/*.db
 /*.csv
