@@ -248,9 +248,22 @@ class StudentManager(QWidget):
     """Главное окно приложения"""
 
     __SORT_TABLES = {
-        "students": ["по ID", "по имени", "по фамилии", "по курсу"],
-        "courses": ["по ID", "по названию", "по преподавателю"],
-        "exams": ["по ID", "по оценке", "по дате"]
+        "students": {
+            "по ID": 0, 
+            "по имени": 1, 
+            "по фамилии": 2, 
+            "по курсу": 3
+        },
+        "courses": {
+            "по ID": 0, 
+            "по названию": 1, 
+            "по преподавателю": 2
+        },
+        "exams": {
+            "по ID": 0, 
+            "по оценке": 3, 
+            "по дате": 4
+        }
     }
 
     SORT_DIRECTION_ASC = "По возрастанию"
@@ -795,10 +808,7 @@ class StudentManager(QWidget):
     
     def setSortingOrder(self, text):
         """Сортировка строк в таблице"""
-        sort_column = (
-            self.get_sort_tables()[self.current_table].index(text) if text else 
-            0
-        )
+        sort_column = self.get_sort_tables()[self.current_table].get(text, 0)
         self.proxy_model.sort(sort_column, (
                 Qt.SortOrder.AscendingOrder if self.sort_direction.currentText() == self.SORT_DIRECTION_ASC else
                 Qt.SortOrder.DescendingOrder
