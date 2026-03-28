@@ -632,70 +632,89 @@ class StudentManager(QWidget):
         self.sort_combo.clear()
         self.sort_combo.addItems(self.get_sort_tables()[self.current_table])
     
+    def add_item_students(self):
+        dialog = AddEditStudentDialog(self)
+        if dialog.exec() != QDialog.DialogCode.Accepted:
+            return
+        
+        data = dialog.getStudentData()
+        if not data:
+            return
+        
+        query = QSqlQuery()
+        query.prepare("""
+            INSERT INTO students (first_name, last_name, course)
+            VALUES (?, ?, ?)
+        """)
+        query.addBindValue(data['first_name'])
+        query.addBindValue(data['last_name'])
+        query.addBindValue(data['course'])
+        
+        if query.exec():
+            student_id = query.lastInsertId()
+            
+            # Добавляем курсы студента
+            for course_name in data['courses']:
+                query2 = QSqlQuery()
+                query2.prepare("INSERT INTO student_courses (student_id, course_name) VALUES (?, ?)")
+                query2.addBindValue(student_id)
+                query2.addBindValue(course_name)
+                query2.exec()
+            
+            self.model.select()
+            QMessageBox.information(self, "Успех", "Студент успешно добавлен!")
+        else:
+            QMessageBox.warning(self, "Ошибка", "Не удалось добавить студента!")
+
+
+    def add_item_courses(self):
+        dialog = AddEditCourseDialog(self)
+        if dialog.exec() != QDialog.DialogCode.Accepted:
+            return
+        
+        data = dialog.getCourseData()
+        if not data:
+            return
+        
+        query = QSqlQuery()
+        query.prepare("INSERT INTO courses (name, teacher) VALUES (?, ?)")
+        query.addBindValue(data['name'])
+        query.addBindValue(data['teacher'])
+        
+        if query.exec():
+            self.model.select()
+            QMessageBox.information(self, "Успех", "Курс успешно добавлен!")
+        else:
+            QMessageBox.warning(self, "Ошибка", "Не удалось добавить курс!")
+
+    def add_item_exams(self):
+        dialog = AddEditExamDialog(self)
+        if dialog.exec() != QDialog.DialogCode.Accepted:
+            return
+        
+        data = dialog.getExamData()
+        if not data:
+            return
+        
+        query = QSqlQuery()
+        query.prepare("INSERT INTO exams (student_id, course_id, grade) VALUES (?, ?, ?)")
+        query.addBindValue(data['student_id'])
+        query.addBindValue(data['course_id'])
+        query.addBindValue(data['grade'])
+        
+        if query.exec():
+            self.model.select()
+            QMessageBox.information(self, "Успех", "Оценка успешно добавлена!")
+        else:
+            QMessageBox.warning(self, "Ошибка", f"Не удалось добавить оценку: {query.lastError().text()}")
+
+
     def addItem(self):
         """Добавление новой записи"""
-        if self.current_table == "students":
-            dialog = AddEditStudentDialog(self)
-            if dialog.exec() == QDialog.DialogCode.Accepted:
-                data = dialog.getStudentData()
-                if data:
-                    query = QSqlQuery()
-                    query.prepare("""
-                        INSERT INTO students (first_name, last_name, course)
-                        VALUES (?, ?, ?)
-                    """)
-                    query.addBindValue(data['first_name'])
-                    query.addBindValue(data['last_name'])
-                    query.addBindValue(data['course'])
-                    
-                    if query.exec():
-                        student_id = query.lastInsertId()
-                        
-                        # Добавляем курсы студента
-                        for course_name in data['courses']:
-                            query2 = QSqlQuery()
-                            query2.prepare("INSERT INTO student_courses (student_id, course_name) VALUES (?, ?)")
-                            query2.addBindValue(student_id)
-                            query2.addBindValue(course_name)
-                            query2.exec()
-                        
-                        self.model.select()
-                        QMessageBox.information(self, "Успех", "Студент успешно добавлен!")
-                    else:
-                        QMessageBox.warning(self, "Ошибка", "Не удалось добавить студента!")
-        
-        elif self.current_table == "courses":
-            dialog = AddEditCourseDialog(self)
-            if dialog.exec() == QDialog.DialogCode.Accepted:
-                data = dialog.getCourseData()
-                if data:
-                    query = QSqlQuery()
-                    query.prepare("INSERT INTO courses (name, teacher) VALUES (?, ?)")
-                    query.addBindValue(data['name'])
-                    query.addBindValue(data['teacher'])
-                    
-                    if query.exec():
-                        self.model.select()
-                        QMessageBox.information(self, "Успех", "Курс успешно добавлен!")
-                    else:
-                        QMessageBox.warning(self, "Ошибка", "Не удалось добавить курс!")
-        
-        elif self.current_table == "exams":
-            dialog = AddEditExamDialog(self)
-            if dialog.exec() == QDialog.DialogCode.Accepted:
-                data = dialog.getExamData()
-                if data:
-                    query = QSqlQuery()
-                    query.prepare("INSERT INTO exams (student_id, course_id, grade) VALUES (?, ?, ?)")
-                    query.addBindValue(data['student_id'])
-                    query.addBindValue(data['course_id'])
-                    query.addBindValue(data['grade'])
-                    
-                    if query.exec():
-                        self.model.select()
-                        QMessageBox.information(self, "Успех", "Оценка успешно добавлена!")
-                    else:
-                        QMessageBox.warning(self, "Ошибка", f"Не удалось добавить оценку: {query.lastError().text()}")
+        try:
+            getattr(self, f"add_item_{self.current_table}")()
+        except Exception as e:
+            print(f"Error addItem: {e}\n{format_exc()}")
     
     def editItem(self):
         """Редактирование выбранной записи"""
