@@ -505,7 +505,6 @@ class StudentManager(QWidget):
         title.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
         title.setStyleSheet("font: bold 24px; color: #2c3e50; padding: 10px;")
         
-        # Кнопки управления таблицами
         students_btn = create_button(title="Студенты", slot=lambda: self.switchTable("students"), css="padding: 8px; font-weight: bold;")
         courses_btn = create_button(title="Курсы", slot=lambda: self.switchTable("courses"), css="padding: 8px; font-weight: bold;")
         exams_btn = create_button(title="Экзамены", slot=lambda: self.switchTable("exams"), css="padding: 8px; font-weight: bold;")
@@ -516,25 +515,17 @@ class StudentManager(QWidget):
         
         export_btn = create_button(title="Экспорт в CSV", slot=self.exportToCSV, icon="export.png")
         import_btn = create_button(title="Импорт из CSV", slot=self.importFromCSV, icon="import.png")
-        
-        # Настройка сортировочного комбобокса
-        sorting_options = {
-            "students": ["Сортировать по ID", "Сортировать по имени", "Сортировать по фамилии", "Сортировать по курсу"],
-            "courses": ["Сортировать по ID", "Сортировать по названию", "Сортировать по преподавателю"],
-            "exams": ["Сортировать по ID", "Сортировать по оценке", "Сортировать по дате"]
-        }
+     
         
         self.sort_combo = QComboBox()
         self.sort_combo.currentTextChanged.connect(self.setSortingOrder)
         
-        # Кнопки для переключения таблиц
         tables_h_box = QHBoxLayout()
         tables_h_box.addWidget(students_btn)
         tables_h_box.addWidget(courses_btn)
         tables_h_box.addWidget(exams_btn)
         tables_h_box.addStretch()
         
-        # Кнопки операций
         operations_h_box = QHBoxLayout()
         operations_h_box.addWidget(add_btn)
         operations_h_box.addWidget(edit_btn)
