@@ -65,6 +65,26 @@
    </p>
 </figure>
 
+# При удалении студета. Его данные удаляются и из связанных таблиц
+<figure>
+   <p align="center">
+      <img src="https://github.com/dr-number/Lab6__PyQT_Introduction_Databases/blob/main/for_read_me/6_link_cours_delete.jpg">
+      <p align="center">До удаления</p>
+   </p>
+</figure>
+<figure>
+   <p align="center">
+      <img src="https://github.com/dr-number/Lab6__PyQT_Introduction_Databases/blob/main/for_read_me/6_link_cours_delete-2.jpg">
+      <p align="center">Подтверждение удаления</p>
+   </p>
+</figure>
+<figure>
+   <p align="center">
+      <img src="https://github.com/dr-number/Lab6__PyQT_Introduction_Databases/blob/main/for_read_me/6_link_cours_delete-3.jpg">
+      <p align="center">Данные из связанной таблицы успешно удалены</p>
+   </p>
+</figure>
+
 # Сортировка
 <figure>
    <p align="center">
