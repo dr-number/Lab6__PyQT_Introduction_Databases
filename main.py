@@ -506,19 +506,10 @@ class StudentManager(QWidget):
         title.setStyleSheet("font: bold 24px; color: #2c3e50; padding: 10px;")
         
         # Кнопки управления таблицами
-        students_btn = QPushButton("Студенты")
-        students_btn.clicked.connect(lambda: self.switchTable("students"))
-        students_btn.setStyleSheet("padding: 8px; font-weight: bold;")
+        students_btn = create_button(title="Студенты", slot=lambda: self.switchTable("students"), css="padding: 8px; font-weight: bold;")
+        courses_btn = create_button(title="Курсы", slot=lambda: self.switchTable("courses"), css="padding: 8px; font-weight: bold;")
+        exams_btn = create_button(title="Экзамены", slot=lambda: self.switchTable("exams"), css="padding: 8px; font-weight: bold;")
         
-        courses_btn = QPushButton("Курсы")
-        courses_btn.clicked.connect(lambda: self.switchTable("courses"))
-        courses_btn.setStyleSheet("padding: 8px; font-weight: bold;")
-        
-        exams_btn = QPushButton("Экзамены")
-        exams_btn.clicked.connect(lambda: self.switchTable("exams"))
-        exams_btn.setStyleSheet("padding: 8px; font-weight: bold;")
-        
-
         add_btn = create_button(title="Добавить", slot=self.addItem, icon="add.png")
         edit_btn = create_button(title="Редактировать", slot=self.editItem, icon="edit.png")
         delete_btn = create_button(title="Удалить", slot=self.deleteItem, icon="delete.png")
