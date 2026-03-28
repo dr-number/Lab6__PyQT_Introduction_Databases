@@ -54,3 +54,9 @@
       <p align="center">Сортировка экзаменов по оценке, по убыванию</p>
    </p>
 </figure>
+<figure>
+   <p align="center">
+      <img src="https://github.com/dr-number/Lab6__PyQT_Introduction_Databases/blob/main/for_read_me/3_sort_courses_1.jpg">
+      <p align="center">Сортировка курсов по названию, по убыванию</p>
+   </p>
+</figure>
