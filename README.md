@@ -19,3 +19,11 @@
       <p align="center">Вариант №2</p>
    </p>
 </figure>
+
+# Основная работа программы
+<figure>
+   <p align="center">
+      <img src="https://github.com/dr-number/Lab6__PyQT_Introduction_Databases/blob/main/for_read_me/1_init_triggers_and_db.jpg">
+      <p align="center">Первый запуск программы. Сознание структуры БД, создание тригерров. Заполнение БД</p>
+   </p>
+</figure>
