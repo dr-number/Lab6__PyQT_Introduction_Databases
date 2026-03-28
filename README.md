@@ -176,3 +176,13 @@
       <p align="center">Автоматическое обновление updated_at при изменении студента</p>
    </p>
 </figure>
+
+<figure>
+   <p align="center">
+      <img src="https://github.com/dr-number/Lab6__PyQT_Introduction_Databases/blob/main/for_read_me/11_trigger_delete_student.jpg">
+   </p>
+   <p align="center">
+      <img src="https://github.com/dr-number/Lab6__PyQT_Introduction_Databases/blob/main/for_read_me/11_trigger_delete_student-1.jpg">
+      <p align="center">Логирование удаления студентов</p>
+   </p>
+</figure>
