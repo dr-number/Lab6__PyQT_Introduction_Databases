@@ -2,6 +2,7 @@
 import sys
 import os
 import csv
+from traceback import format_exc
 from datetime import datetime
 from PyQt6.QtWidgets import (
     QApplication, QWidget, QLabel, QPushButton, QComboBox, QTableView,
@@ -450,42 +451,46 @@ class StudentManager(QWidget):
         # Прокси модель для сортировки
         self.proxy_model = QSortFilterProxyModel()
         self.proxy_model.setSourceModel(self.model)
+
+    def show_table_students(self):
+        self.model.setTable("students")
+        self.model.setHeaderData(0, Qt.Orientation.Horizontal, "ID")
+        self.model.setHeaderData(1, Qt.Orientation.Horizontal, "Имя")
+        self.model.setHeaderData(2, Qt.Orientation.Horizontal, "Фамилия")
+        self.model.setHeaderData(3, Qt.Orientation.Horizontal, "Курс")
+        self.model.setHeaderData(4, Qt.Orientation.Horizontal, "Дата создания")
+        self.model.setHeaderData(5, Qt.Orientation.Horizontal, "Дата обновления")
+
+    def show_table_courses(self):
+        self.model.setTable("courses")
+        self.model.setHeaderData(0, Qt.Orientation.Horizontal, "ID")
+        self.model.setHeaderData(1, Qt.Orientation.Horizontal, "Название")
+        self.model.setHeaderData(2, Qt.Orientation.Horizontal, "Преподаватель")
+    
+    def show_table_exams(self):
+        self.model.setTable("exams")
+        self.model.setRelation(1, QSqlRelation("students", "id", "first_name"))
+        self.model.setRelation(2, QSqlRelation("courses", "id", "name"))
+        self.model.setHeaderData(0, Qt.Orientation.Horizontal, "ID")
+        self.model.setHeaderData(1, Qt.Orientation.Horizontal, "Студент")
+        self.model.setHeaderData(2, Qt.Orientation.Horizontal, "Курс")
+        self.model.setHeaderData(3, Qt.Orientation.Horizontal, "Оценка")
+        self.model.setHeaderData(4, Qt.Orientation.Horizontal, "Дата экзамена")
     
     def updateModel(self):
         """Обновление модели в зависимости от выбранной таблицы"""
         self.model = QSqlRelationalTableModel()
+
+        try:
+            getattr(self, f"show_table_{self.current_table}")()
+            self.model.select()
         
-        if self.current_table == "students":
-            self.model.setTable("students")
-            self.model.setHeaderData(0, Qt.Orientation.Horizontal, "ID")
-            self.model.setHeaderData(1, Qt.Orientation.Horizontal, "Имя")
-            self.model.setHeaderData(2, Qt.Orientation.Horizontal, "Фамилия")
-            self.model.setHeaderData(3, Qt.Orientation.Horizontal, "Курс")
-            self.model.setHeaderData(4, Qt.Orientation.Horizontal, "Дата создания")
-            self.model.setHeaderData(5, Qt.Orientation.Horizontal, "Дата обновления")
-            
-        elif self.current_table == "courses":
-            self.model.setTable("courses")
-            self.model.setHeaderData(0, Qt.Orientation.Horizontal, "ID")
-            self.model.setHeaderData(1, Qt.Orientation.Horizontal, "Название")
-            self.model.setHeaderData(2, Qt.Orientation.Horizontal, "Преподаватель")
-            
-        elif self.current_table == "exams":
-            self.model.setTable("exams")
-            self.model.setRelation(1, QSqlRelation("students", "id", "first_name"))
-            self.model.setRelation(2, QSqlRelation("courses", "id", "name"))
-            self.model.setHeaderData(0, Qt.Orientation.Horizontal, "ID")
-            self.model.setHeaderData(1, Qt.Orientation.Horizontal, "Студент")
-            self.model.setHeaderData(2, Qt.Orientation.Horizontal, "Курс")
-            self.model.setHeaderData(3, Qt.Orientation.Horizontal, "Оценка")
-            self.model.setHeaderData(4, Qt.Orientation.Horizontal, "Дата экзамена")
-        
-        self.model.select()
-        
-        if hasattr(self, 'proxy_model'):
-            self.proxy_model.setSourceModel(self.model)
-            if hasattr(self, 'table_view'):
-                self.table_view.setModel(self.proxy_model)
+            if hasattr(self, 'proxy_model'):
+                self.proxy_model.setSourceModel(self.model)
+                if hasattr(self, 'table_view'):
+                    self.table_view.setModel(self.proxy_model)
+        except Exception as e:
+            print(f"Error updateModel: {e}\n{format_exc()}")
     
     def setUpMainWindow(self):
         """Создание и расположение виджетов в главном окне"""
