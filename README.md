@@ -186,3 +186,13 @@
       <p align="center">Логирование удаления студентов</p>
    </p>
 </figure>
+
+<figure>
+   <p align="center">
+      <img src="https://github.com/dr-number/Lab6__PyQT_Introduction_Databases/blob/main/for_read_me/12_trigger_check_error_mark.jpg">
+   </p>
+   <p align="center">
+      <img src="https://github.com/dr-number/Lab6__PyQT_Introduction_Databases/blob/main/for_read_me/12_trigger_check_error_mark-1.jpg">
+      <p align="center">Проверка оценки перед вставкой</p>
+   </p>
+</figure>

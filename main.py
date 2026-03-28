@@ -194,7 +194,7 @@ class AddEditExamDialog(QDialog):
             self.course_combo.addItem(query.value(1), query.value(0))
         
         self.grade_spin = QDoubleSpinBox()
-        self.grade_spin.setRange(2, 5)
+        self.grade_spin.setRange(2, 5) #TODO убрать для провокации тригера "Проверка оценки перед вставкой"
         self.grade_spin.setSingleStep(0.1)
         
         layout.addRow("Студент:", self.student_combo)
