@@ -246,6 +246,15 @@ class AddEditExamDialog(QDialog):
 
 class StudentManager(QWidget):
     """Главное окно приложения"""
+
+    __SORT_TABLES = {
+        "students": ["по ID", "по имени", "по фамилии", "по курсу"],
+        "courses": ["по ID", "по названию", "по преподавателю"],
+        "exams": ["по ID", "по оценке", "по дате"]
+    }
+
+    def get_sort_tables(self) -> dict:
+        return self.__SORT_TABLES
     
     def __init__(self):
         super().__init__()
@@ -323,10 +332,9 @@ class StudentManager(QWidget):
         """)
     
     def createTriggers(self):
-        """Создание триггеров с использованием универсальной функции"""
+        """Создание триггеров"""
     
         def create_trigger_if_not_exists(trigger_name, trigger_sql):
-            """Универсальная функция для создания триггера с проверкой существования"""
             query = QSqlQuery()
             
             # Проверяем существование триггера
@@ -338,7 +346,6 @@ class StudentManager(QWidget):
                 print(f"Триггер '{trigger_name}' уже существует")
                 return True
             
-            # Создаем триггер
             if query.exec(trigger_sql):
                 print(f"Триггер '{trigger_name}' успешно создан")
                 return True
@@ -603,15 +610,7 @@ class StudentManager(QWidget):
     def updateSortOptions(self):
         """Обновление опций сортировки для текущей таблицы"""
         self.sort_combo.clear()
-        if self.current_table == "students":
-            self.sort_combo.addItems(["Сортировать по ID", "Сортировать по имени", 
-                                      "Сортировать по фамилии", "Сортировать по курсу"])
-        elif self.current_table == "courses":
-            self.sort_combo.addItems(["Сортировать по ID", "Сортировать по названию", 
-                                      "Сортировать по преподавателю"])
-        elif self.current_table == "exams":
-            self.sort_combo.addItems(["Сортировать по ID", "Сортировать по оценке", 
-                                      "Сортировать по дате"])
+        self.sort_combo.addItems(self.get_sort_tables()[self.current_table])
     
     def addItem(self):
         """Добавление новой записи"""
@@ -781,24 +780,10 @@ class StudentManager(QWidget):
     
     def setSortingOrder(self, text):
         """Сортировка строк в таблице"""
-        sort_column = 0
-        if text == "Сортировать по ID":
-            sort_column = 0
-        elif text == "Сортировать по имени" and self.current_table == "students":
-            sort_column = 1
-        elif text == "Сортировать по фамилии" and self.current_table == "students":
-            sort_column = 2
-        elif text == "Сортировать по курсу" and self.current_table == "students":
-            sort_column = 3
-        elif text == "Сортировать по названию" and self.current_table == "courses":
-            sort_column = 1
-        elif text == "Сортировать по преподавателю" and self.current_table == "courses":
-            sort_column = 2
-        elif text == "Сортировать по оценке" and self.current_table == "exams":
-            sort_column = 3
-        elif text == "Сортировать по дате" and self.current_table == "exams":
-            sort_column = 4
-        
+        sort_column = (
+            self.get_sort_tables()[self.current_table].index(text) if text else 
+            0
+        )
         self.proxy_model.sort(sort_column, Qt.SortOrder.AscendingOrder)
     
     def exportToCSV(self):
