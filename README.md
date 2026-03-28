@@ -46,6 +46,16 @@
    </p>
 </figure>
 
+<figure>
+   <p align="center">
+      <img src="https://github.com/dr-number/Lab6__PyQT_Introduction_Databases/blob/main/for_read_me/7_add-3.jpg">
+   </p>
+   <p align="center">
+      <img src="https://github.com/dr-number/Lab6__PyQT_Introduction_Databases/blob/main/for_read_me/7_add-4.jpg">
+      <p align="center">Добавление нового студента (в том числе на новый курс)</p>
+   </p>
+</figure>
+
 # Редактирование данных
 <figure>
    <p align="center">
