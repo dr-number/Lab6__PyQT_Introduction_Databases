@@ -45,8 +45,9 @@ class AddEditStudentDialog(QDialog):
         self.courses_group = QGroupBox("Выбранные курсы")
         courses_layout = QVBoxLayout()
         self.course_checkboxes = {}
-        courses = ["Математика", "Физика", "Программирование", "Базы данных", "Сети"]
-        for course in courses:
+        query = QSqlQuery("SELECT name FROM courses ORDER BY name")
+        while query.next():
+            course = query.value(0)
             cb = QCheckBox(course)
             self.course_checkboxes[course] = cb
             courses_layout.addWidget(cb)
