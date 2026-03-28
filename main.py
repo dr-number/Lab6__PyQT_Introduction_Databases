@@ -518,16 +518,10 @@ class StudentManager(QWidget):
         exams_btn.clicked.connect(lambda: self.switchTable("exams"))
         exams_btn.setStyleSheet("padding: 8px; font-weight: bold;")
         
-        # Кнопки CRUD операций
-        add_btn = QPushButton("Добавить")
-        add_btn.setStyleSheet("padding: 8px; background-color: #27ae60; color: white; font-weight: bold;") 
-        add_btn.clicked.connect(self.addItem)
 
+        add_btn = create_button(title="Добавить", slot=self.addItem, icon="add.png")
         edit_btn = create_button(title="Редактировать", slot=self.editItem, icon="edit.png")
-        
-        delete_btn = QPushButton("Удалить")
-        delete_btn.setStyleSheet("padding: 8px; background-color: #e74c3c; color: white; font-weight: bold;")
-        delete_btn.clicked.connect(self.deleteItem)
+        delete_btn = create_button(title="Удалить", slot=self.deleteItem, icon="delete.png")
         
         export_btn = QPushButton("Экспорт в CSV")
         export_btn.setStyleSheet("padding: 8px; background-color: #f39c12; color: white; font-weight: bold;")
