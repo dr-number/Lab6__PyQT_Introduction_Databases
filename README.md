@@ -20,6 +20,13 @@
    </p>
 </figure>
 
+# Схема БД
+<figure>
+   <p align="center">
+      <img src="https://github.com/dr-number/Lab6__PyQT_Introduction_Databases/blob/main/for_read_me/0_view_db.jpg">
+   </p>
+</figure>
+
 # Основная работа программы
 <figure>
    <p align="center">
