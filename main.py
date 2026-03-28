@@ -7,7 +7,7 @@ from PyQt6.QtWidgets import (
     QApplication, QWidget, QLabel, QPushButton, QComboBox, QTableView,
     QHeaderView, QAbstractItemView, QMessageBox, QHBoxLayout, QVBoxLayout,
     QSizePolicy, QDialog, QFormLayout, QLineEdit, QSpinBox, QDoubleSpinBox,
-    QDialogButtonBox, QFileDialog, QGroupBox, QRadioButton, QButtonGroup
+    QDialogButtonBox, QFileDialog, QGroupBox, QRadioButton, QButtonGroup, QCheckBox
 )
 from PyQt6.QtCore import Qt, QSortFilterProxyModel
 from PyQt6.QtGui import QIcon
@@ -489,6 +489,18 @@ class StudentManager(QWidget):
     
     def setUpMainWindow(self):
         """Создание и расположение виджетов в главном окне"""
+
+        PATH_UI_IMG = "ui_images"
+
+        def create_button(title: str, slot, icon: str = "", css: str = "padding: 8px;"):
+            btn = QPushButton(title)
+            btn.clicked.connect(slot)
+            btn.setStyleSheet(css)
+            if icon:
+                btn.setIcon(QIcon(os.path.join(PATH_UI_IMG, icon)))
+            return btn
+
+        
         title = QLabel("Система управления студентами")
         title.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
         title.setStyleSheet("font: bold 24px; color: #2c3e50; padding: 10px;")
@@ -508,12 +520,10 @@ class StudentManager(QWidget):
         
         # Кнопки CRUD операций
         add_btn = QPushButton("Добавить")
-        add_btn.setStyleSheet("padding: 8px; background-color: #27ae60; color: white; font-weight: bold;")
+        add_btn.setStyleSheet("padding: 8px; background-color: #27ae60; color: white; font-weight: bold;") 
         add_btn.clicked.connect(self.addItem)
-        
-        edit_btn = QPushButton("Редактировать")
-        edit_btn.setStyleSheet("padding: 8px; background-color: #3498db; color: white; font-weight: bold;")
-        edit_btn.clicked.connect(self.editItem)
+
+        edit_btn = create_button(title="Редактировать", slot=self.editItem, icon="edit.png")
         
         delete_btn = QPushButton("Удалить")
         delete_btn.setStyleSheet("padding: 8px; background-color: #e74c3c; color: white; font-weight: bold;")
