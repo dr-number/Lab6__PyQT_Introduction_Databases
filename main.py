@@ -278,7 +278,6 @@ class StudentManager(QWidget):
         self.initializeUI()
     
     def initializeUI(self):
-        """Настройка графического интерфейса приложения"""
         self.setMinimumSize(1200, 700)
         self.setWindowTitle("Система управления студентами")
         self.createConnection()
@@ -290,7 +289,6 @@ class StudentManager(QWidget):
         self.show()
     
     def createConnection(self):
-        """Установка соединения с базой данных"""
         self.database = QSqlDatabase.addDatabase("QSQLITE")
         self.database.setDatabaseName("students.db")
         
@@ -299,10 +297,8 @@ class StudentManager(QWidget):
             sys.exit(1)
     
     def createTables(self):
-        """Создание таблиц в базе данных"""
         query = QSqlQuery()
         
-        # Таблица студентов
         query.exec("""
             CREATE TABLE IF NOT EXISTS students (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -314,7 +310,6 @@ class StudentManager(QWidget):
             )
         """)
         
-        # Таблица курсов
         query.exec("""
             CREATE TABLE IF NOT EXISTS courses (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
