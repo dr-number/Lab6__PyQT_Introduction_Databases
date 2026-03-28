@@ -141,3 +141,28 @@
       <p align="center">Сортировка курсов по названию, по убыванию</p>
    </p>
 </figure>
+
+# Экспорт данных
+<figure>
+   <p align="center">
+      <img src="https://github.com/dr-number/Lab6__PyQT_Introduction_Databases/blob/main/for_read_me/8_export.jpg">
+      <p align="center">Экспорт данных в csv</p>
+   </p>
+   <p align="center">
+      <img src="https://github.com/dr-number/Lab6__PyQT_Introduction_Databases/blob/main/for_read_me/8_export-clear.jpg">
+      <p align="center">Полная очистка таблицы студентов после экспорта</p>
+   </p>
+</figure>
+
+# Импорт данных
+<figure>
+   <p align="center">
+      <img src="https://github.com/dr-number/Lab6__PyQT_Introduction_Databases/blob/main/for_read_me/9_import.jpg">
+      <p align="center">Выбор источника импорта</p>
+   </p>
+   <p align="center">
+      <img src="https://github.com/dr-number/Lab6__PyQT_Introduction_Databases/blob/main/for_read_me/9_import-1.jpg">
+      <p align="center">Данные успешно импортированы</p>
+   </p>
+</figure>
+
