@@ -27,3 +27,10 @@
       <p align="center">Первый запуск программы. Сознание структуры БД, создание тригерров. Заполнение БД</p>
    </p>
 </figure>
+
+<figure>
+   <p align="center">
+      <img src="https://github.com/dr-number/Lab6__PyQT_Introduction_Databases/blob/main/for_read_me/2_init_triggers_and_db_repeat_start.jpg">
+      <p align="center">Повторный запуск программы. Существующие тригерры не пересоздаются. Если в БД есть хотябы одна запись, повторное заполнение БД не происходит</p>
+   </p>
+</figure>
