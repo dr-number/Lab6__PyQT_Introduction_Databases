@@ -804,14 +804,12 @@ class StudentManager(QWidget):
         row = source_index.row()
         record = self.model.record(row)
         item_id = record.value(0)
-        
-        if self.current_table == "students":
-            self.edit_item_students(item_id)
-        elif self.current_table == "courses":
-            self.edit_item_courses(item_id)
-        elif self.current_table == "exams":
-            self.edit_item_exams()
-            
+
+        try:
+            getattr(self, f"edit_item_{self.current_table}")(item_id)
+        except Exception as e:
+            print(f"Error editItem: {e}\n{format_exc()}")
+         
     
     def deleteItem(self):
         """Удаление выбранной записи с подтверждением"""
