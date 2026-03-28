@@ -373,10 +373,19 @@ class StudentManager(QWidget):
     
     def fillSampleData(self):
         """Заполнение базы данных случайными значениями"""
-        # Проверяем, есть ли данные в таблице студентов
-        query = QSqlQuery("SELECT COUNT(*) FROM students")
-        if query.exec() and query.next() and query.value(0) > 0:
-            return  # Данные уже есть
+        # Проверяем, есть ли данные в ЛЮБОЙ из таблиц
+        tables_to_check = ["students", "courses", "exams", "student_courses"]
+        has_data = False
+        
+        for table in tables_to_check:
+            query = QSqlQuery(f"SELECT COUNT(*) FROM {table}")
+            if query.exec() and query.next() and query.value(0) > 0:
+                has_data = True
+                break
+        
+        if has_data:
+            print("База данных уже содержит данные. Заполнение пропущено.")
+            return  # Если хотя бы одна таблица не пуста - пропускаем заполнение
         
         # Добавляем курсы
         courses = [
