@@ -715,7 +715,84 @@ class StudentManager(QWidget):
             getattr(self, f"add_item_{self.current_table}")()
         except Exception as e:
             print(f"Error addItem: {e}\n{format_exc()}")
-    
+
+    def edit_item_students(self, item_id: int):
+        dialog = AddEditStudentDialog(self, item_id)
+        if dialog.exec() != QDialog.DialogCode.Accepted:
+            return
+        
+        data = dialog.getStudentData()
+        if not data:
+            return
+        
+        query = QSqlQuery()
+        query.prepare("""
+            UPDATE students 
+            SET first_name = ?, last_name = ?, course = ?
+            WHERE id = ?
+        """)
+        query.addBindValue(data['first_name'])
+        query.addBindValue(data['last_name'])
+        query.addBindValue(data['course'])
+        query.addBindValue(item_id)
+        
+        if query.exec():
+            # Обновляем курсы студента
+            query2 = QSqlQuery()
+            query2.prepare("DELETE FROM student_courses WHERE student_id = ?")
+            query2.addBindValue(item_id)
+            query2.exec()
+            
+            for course_name in data['courses']:
+                query2 = QSqlQuery()
+                query2.prepare("INSERT INTO student_courses (student_id, course_name) VALUES (?, ?)")
+                query2.addBindValue(item_id)
+                query2.addBindValue(course_name)
+                query2.exec()
+            
+            self.model.select()
+            QMessageBox.information(self, "Успех", "Данные студента обновлены!")
+
+
+    def edit_item_courses(self, item_id: int):
+        dialog = AddEditCourseDialog(self, item_id)
+        if dialog.exec() != QDialog.DialogCode.Accepted:
+            return
+        
+        data = dialog.getCourseData()
+        if not data:
+            return
+        
+        query = QSqlQuery()
+        query.prepare("UPDATE courses SET name = ?, teacher = ? WHERE id = ?")
+        query.addBindValue(data['name'])
+        query.addBindValue(data['teacher'])
+        query.addBindValue(item_id)
+        
+        if query.exec():
+            self.model.select()
+            QMessageBox.information(self, "Успех", "Данные курса обновлены!")
+
+    def edit_item_exams(self, item_id: int):
+        dialog = AddEditExamDialog(self, item_id)
+        if dialog.exec() != QDialog.DialogCode.Accepted:
+            return
+        
+        data = dialog.getExamData()
+        if not data:
+            return
+        
+        query = QSqlQuery()
+        query.prepare("UPDATE exams SET student_id = ?, course_id = ?, grade = ? WHERE id = ?")
+        query.addBindValue(data['student_id'])
+        query.addBindValue(data['course_id'])
+        query.addBindValue(data['grade'])
+        query.addBindValue(item_id)
+        
+        if query.exec():
+            self.model.select()
+            QMessageBox.information(self, "Успех", "Данные экзамена обновлены!")
+
     def editItem(self):
         """Редактирование выбранной записи"""
         current_index = self.table_view.currentIndex()
@@ -729,68 +806,12 @@ class StudentManager(QWidget):
         item_id = record.value(0)
         
         if self.current_table == "students":
-            dialog = AddEditStudentDialog(self, item_id)
-            if dialog.exec() == QDialog.DialogCode.Accepted:
-                data = dialog.getStudentData()
-                if data:
-                    query = QSqlQuery()
-                    query.prepare("""
-                        UPDATE students 
-                        SET first_name = ?, last_name = ?, course = ?
-                        WHERE id = ?
-                    """)
-                    query.addBindValue(data['first_name'])
-                    query.addBindValue(data['last_name'])
-                    query.addBindValue(data['course'])
-                    query.addBindValue(item_id)
-                    
-                    if query.exec():
-                        # Обновляем курсы студента
-                        query2 = QSqlQuery()
-                        query2.prepare("DELETE FROM student_courses WHERE student_id = ?")
-                        query2.addBindValue(item_id)
-                        query2.exec()
-                        
-                        for course_name in data['courses']:
-                            query2 = QSqlQuery()
-                            query2.prepare("INSERT INTO student_courses (student_id, course_name) VALUES (?, ?)")
-                            query2.addBindValue(item_id)
-                            query2.addBindValue(course_name)
-                            query2.exec()
-                        
-                        self.model.select()
-                        QMessageBox.information(self, "Успех", "Данные студента обновлены!")
-        
+            self.edit_item_students(item_id)
         elif self.current_table == "courses":
-            dialog = AddEditCourseDialog(self, item_id)
-            if dialog.exec() == QDialog.DialogCode.Accepted:
-                data = dialog.getCourseData()
-                if data:
-                    query = QSqlQuery()
-                    query.prepare("UPDATE courses SET name = ?, teacher = ? WHERE id = ?")
-                    query.addBindValue(data['name'])
-                    query.addBindValue(data['teacher'])
-                    query.addBindValue(item_id)
-                    
-                    if query.exec():
-                        self.model.select()
-                        QMessageBox.information(self, "Успех", "Данные курса обновлены!")
-        
+            self.edit_item_courses(item_id)
         elif self.current_table == "exams":
-            dialog = AddEditExamDialog(self, item_id)
-            if dialog.exec() == QDialog.DialogCode.Accepted:
-                data = dialog.getExamData()
-                if data:
-                    query = QSqlQuery()
-                    query.prepare("UPDATE exams SET student_id = ?, course_id = ?, grade = ? WHERE id = ?")
-                    query.addBindValue(data['student_id'])
-                    query.addBindValue(data['course_id'])
-                    query.addBindValue(data['grade'])
-                    query.addBindValue(item_id)
-                    
-                    if query.exec():
-                        self.model.select()
-                        QMessageBox.information(self, "Успех", "Данные экзамена обновлены!")
+            self.edit_item_exams()
+            
     
     def deleteItem(self):
         """Удаление выбранной записи с подтверждением"""
