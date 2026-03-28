@@ -35,6 +35,21 @@
    </p>
 </figure>
 
+# Редактирование данных
+<figure>
+   <p align="center">
+      <img src="https://github.com/dr-number/Lab6__PyQT_Introduction_Databases/blob/main/for_read_me/4_edit_data_1.jpg">
+      <p align="center">Редактирование данных. Исправление оценки</p>
+   </p>
+</figure>
+
+<figure>
+   <p align="center">
+      <img src="https://github.com/dr-number/Lab6__PyQT_Introduction_Databases/blob/main/for_read_me/4_edit_data_1-2.jpg">
+      <p align="center">Редактирование данных. Исправление оценки. (результат)</p>
+   </p>
+</figure>
+
 # Сортировка
 <figure>
    <p align="center">
