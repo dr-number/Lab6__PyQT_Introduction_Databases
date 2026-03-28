@@ -523,13 +523,8 @@ class StudentManager(QWidget):
         edit_btn = create_button(title="Редактировать", slot=self.editItem, icon="edit.png")
         delete_btn = create_button(title="Удалить", slot=self.deleteItem, icon="delete.png")
         
-        export_btn = QPushButton("Экспорт в CSV")
-        export_btn.setStyleSheet("padding: 8px; background-color: #f39c12; color: white; font-weight: bold;")
-        export_btn.clicked.connect(self.exportToCSV)
-        
-        import_btn = QPushButton("Импорт из CSV")
-        import_btn.setStyleSheet("padding: 8px; background-color: #9b59b6; color: white; font-weight: bold;")
-        import_btn.clicked.connect(self.importFromCSV)
+        export_btn = create_button(title="Экспорт в CSV", slot=self.exportToCSV, icon="export.png")
+        import_btn = create_button(title="Импорт из CSV", slot=self.importFromCSV, icon="import.png")
         
         # Настройка сортировочного комбобокса
         sorting_options = {
