@@ -35,21 +35,6 @@
    </p>
 </figure>
 
-# Удаление данных
-<figure>
-   <p align="center">
-      <img src="https://github.com/dr-number/Lab6__PyQT_Introduction_Databases/blob/main/for_read_me/5_delete_record_1.jpg">
-      <p align="center">Удаление данных. Подтверждение намерения удаления</p>
-   </p>
-</figure>
-
-<figure>
-   <p align="center">
-      <img src="https://github.com/dr-number/Lab6__PyQT_Introduction_Databases/blob/main/for_read_me/5_delete_record_2.jpg">
-      <p align="center">Данные успешно удалены</p>
-   </p>
-</figure>
-
 # Редактирование данных
 <figure>
    <p align="center">
@@ -62,6 +47,21 @@
    <p align="center">
       <img src="https://github.com/dr-number/Lab6__PyQT_Introduction_Databases/blob/main/for_read_me/4_edit_data_1-2.jpg">
       <p align="center">Редактирование данных. Исправление оценки. (результат)</p>
+   </p>
+</figure>
+
+# Удаление данных
+<figure>
+   <p align="center">
+      <img src="https://github.com/dr-number/Lab6__PyQT_Introduction_Databases/blob/main/for_read_me/5_delete_record_1.jpg">
+      <p align="center">Удаление данных. Подтверждение намерения удаления</p>
+   </p>
+</figure>
+
+<figure>
+   <p align="center">
+      <img src="https://github.com/dr-number/Lab6__PyQT_Introduction_Databases/blob/main/for_read_me/5_delete_record_2.jpg">
+      <p align="center">Данные успешно удалены</p>
    </p>
 </figure>
 
